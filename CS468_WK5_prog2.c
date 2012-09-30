@@ -10,7 +10,7 @@
 #define WRITE 1
 
 void getProcessInfo();
-
+void getInput(char word[]);
 
 
 int main()
@@ -18,26 +18,16 @@ int main()
 int fd[2];
 int fork1_pid = 0;
 int fork2_pid = 0;
-char word[10], ch = '0x0';
+char word[10];
 int count = 0;
  
 pipe(fd);
 
 fork1_pid = fork();
 getProcessInfo();
-if(fork1_pid == 0){
-fputs("Enter up to ten characters: ", stdout);
-fflush(stdout);
-if(fgets(word, sizeof word, stdin) != NULL)
-{
-char *newline = strchr(text, '\n');
-if(newline != NULL)
-{
-*newline = '\0';
-}
-}
+getInput(word);
 printf("\nword was: \"%s\" \n", word);
-}
+fflush(stdout);
 return 0;
 }
 
@@ -45,4 +35,17 @@ void getProcessInfo()
 {
 printf("Parent is: %d...\n",getppid());
 printf("Fork running is: %d...\n",getpid());
+}
+void getInput(char word[])
+{
+fputs("Enter up to ten characters: ", stdout);
+fflush(stdout);
+if(fgets(word, sizeof word, stdin) != NULL)
+{
+char *newline = strchr(word, '\n');
+if(newline != NULL)
+{
+*newline = '\0';
+}
+}
 }
