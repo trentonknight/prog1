@@ -28,6 +28,8 @@ exit(0);
 kill (pid1, SIGSTOP);
 printf("Parent process  %d  suspended first child process  %d ...\n", getppid(), getpid());
 }
+/*sleep and let first child finish...*/
+sleep(5);
 pid2 = fork();
 if(pid2 == 0){
 printf("Second child process  %d  starting...\n", getpid());
@@ -40,21 +42,20 @@ exit(1);
 }
 exit(0);
 }
-kill(pid2, SIGSTOP);
-//setup timeframes for processes
-kill (pid1, SIGCONT);
-sleep(5);
-kill (pid2, SIGCONT);
+/*sleep and let second child finish...*/
 sleep(5);
 kill (pid2, SIGINT);
 if(pid2 != 0){
 ret = wait(&status);
-printf("Second child %d will exit now.\n",ret);
+printf("Second child process %d terminated.\n",ret);
 }
+kill (pid1, SIGCONT);
+//sleep(5);
 kill (pid1, SIGINT);
 if(pid1 != 0){
 ret = wait(&status);
-printf("First child  %d  will exit now.\n", ret);
+printf("First child process %d terminated.\n", ret);
 }
+exit(5);
 return 0;
 }
