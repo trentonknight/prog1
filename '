@@ -24,6 +24,7 @@ for(i = 1; i < 6; i++){
    printf("Counting...%d\n",i);
    sleep(1);
  }
+printf("First child  %d  will exit now.\n", getpid());
 exit(0);
 kill (pid1, SIGSTOP);
 printf("Parent process  %d  suspended first child process  %d ...\n", getppid(), getpid());
@@ -39,22 +40,23 @@ perror("execl failed!");
 exit(1);
 }
 exit(0);
+printf("Second child process %d terminated\n", getpid());
 }
-kill(pid2, SIGSTOP);
+
 //setup timeframes for processes
+kill (pid2, SIGSTOP);
+//ret = wait(&status);
+//printf("Second child process %d terminated\n", getpid());
 kill (pid1, SIGCONT);
 sleep(5);
 kill (pid2, SIGCONT);
+/*sleep for second thread to run*/
 sleep(5);
 kill (pid2, SIGINT);
-if(pid2 != 0){
 ret = wait(&status);
-printf("Second child %d will exit now.\n",ret);
-}
+printf("Second child process %d terminated\n", getpid());
 kill (pid1, SIGINT);
-if(pid1 != 0){
-ret = wait(&status);
-printf("First child  %d  will exit now.\n", ret);
-}
+//ret = wait(&status);
+//printf("First child process %d terminated\n", getpid());
 return 0;
 }
