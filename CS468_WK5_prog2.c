@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 
+
 #define READ 0
 #define WRITE 1
 
@@ -16,6 +17,8 @@ void getInput(char word[]);
 void processOne(int *fd, char word[]);
 void processTwo(int *fd);
 void processThree();
+char* revChars(char revword[],int max);
+
 
 int main()
 {
@@ -75,11 +78,31 @@ int ten = 0;
 int message[10];
 int newWord[10];
 close(fd[WRITE]);
-for(ten = 0; ten < 10; ten++){
-recieved = read(fd[READ], message, 1);
-printf("\nMessage recieved from pipe: %s", message);
-newWord[ten] = message[0];
+//for(ten = 0; ten < 10; ten++){
+recieved = read(fd[READ], message, 100);
+if(recieved){
+printf("\nMessage recieved from pipe: %s\n\n", message);
+printf("revChar call: %s\n\n", revChars(message,10));
+//printf("\nMessage recieved from pipe: %s\n\n", message);
 }
+//}
+close(fd[READ]);
 }
 void processThree(){
+}
+char* revChars(char revword[],int max){
+int ten = 0;
+int flip = strlen(revword);
+int loopr = flip + 1;
+char newWord[10] = {0};
+
+printf("\nMessage passed from function: %s\n\n", revword);
+for(ten = 0; ten < loopr; ten++){
+flip--;
+newWord[flip] = revword[ten];
+}
+for(ten = 0; ten < loopr; ten++){
+printf("\nMessage reversed: %c\n\n", newWord[ten]);
+}
+return newWord;
 }
