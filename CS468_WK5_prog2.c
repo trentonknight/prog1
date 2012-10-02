@@ -7,17 +7,15 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <pthread.h>
-
+#include "processinf.h"
 
 #define READ 0
 #define WRITE 1
 
-void getProcessInfo();
-void getInput(char word[]);
+//void getInput(char word[]);
 void processOne(int *fd, char word[]);
 void processTwo(int *fd);
-void processThree();
-char* revChars(char revword[]);
+//char* revChars(char revword[]);
 
 
 int main()
@@ -30,40 +28,20 @@ pipe(fd);
 getInput(word);
 f1_pid = fork();
 if(f1_pid == 0){
-printf("Sending piped message...\n");
+printf("Creating piped message...\n");
 processOne(fd,word);
 }
 sleep(5);
 kill(f1_pid, SIGSTOP);
 f2_pid = fork();
-getProcessInfo();
 if(f2_pid == 0){
-printf("Reading piped message...\n");
+printf("Reading pipe from f1_pid...\n");
 processTwo(fd);
 }
 sleep(5);
 kill(f2_pid, SIGINT);
 kill(f1_pid, SIGINT);
 return 0;
-}
-
-void getProcessInfo()
-{
-printf("Parent is: %d...\n",getppid());
-printf("Fork running is: %d...\n",getpid());
-}
-void getInput(char word[])
-{
-fputs("Enter up to ten characters: ", stdout);
-fflush(stdout);
-if(fgets(word, sizeof word, stdin) != NULL)
-{
-char *newline = strchr(word, '\n');
-if(newline != NULL)
-{
-*newline = '\0';
-}
-}
 }
 void processOne(int *fd, char word[]){
 close(fd[READ]);
@@ -74,9 +52,7 @@ close(fd[WRITE]);
 }
 void processTwo(int *fd){
 int recieved;
-int ten = 0;
 int message[10];
-int newWord[10];
 close(fd[WRITE]);
 recieved = read(fd[READ], message, 100);
 if(recieved){
@@ -85,17 +61,4 @@ printf("revChar call: %s\n\n", revChars(message));
 }
 close(fd[READ]);
 }
-void processThree(){
-}
-char* revChars(char revword[]){
-int ten = 0;
-int flip = strlen(revword);
-int loopr = flip + 1;
-char newWord[10] = {0};
 
-for(ten = 0; ten < loopr; ten++){
-flip--;
-newWord[flip] = revword[ten];
-}
-return newWord;
-}
