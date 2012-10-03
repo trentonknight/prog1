@@ -33,8 +33,7 @@ char* revChars(char revword[]){
 int ten = 0;
 int flip = strlen(revword);
 int loopr = flip + 1;
-char newWord[10] = {0};
-
+static char newWord[10] = {0};
 for(ten = 0; ten < loopr; ten++){
 flip--;
 newWord[flip] = revword[ten];

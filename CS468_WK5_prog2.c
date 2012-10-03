@@ -12,53 +12,63 @@
 #define READ 0
 #define WRITE 1
 
-//void getInput(char word[]);
-void processOne(int *fd, char word[]);
-void processTwo(int *fd);
-//char* revChars(char revword[]);
+void processOne(int *fd1, char word[]);
+void processTwo(int *fd1, int *fd2);
 
 
 int main()
 {
 char word[10];
-int fd[2];
+int fd1[2];
+int fd2[2];
+int fd3[2];
 int f1_pid;
 int f2_pid;
-pipe(fd);
+pipe(fd1);
+pipe(fd2);
+pipe(fd3);
 getInput(word);
 f1_pid = fork();
 if(f1_pid == 0){
-printf("Creating piped message...\n");
-processOne(fd,word);
+printf("Creating piped message fd1...\n");
+processOne(fd1,word);
 }
 sleep(5);
 kill(f1_pid, SIGSTOP);
 f2_pid = fork();
 if(f2_pid == 0){
 printf("Reading pipe from f1_pid...\n");
-processTwo(fd);
+processTwo(fd1,fd2);
 }
 sleep(5);
 kill(f2_pid, SIGINT);
 kill(f1_pid, SIGINT);
 return 0;
 }
-void processOne(int *fd, char word[]){
-close(fd[READ]);
+void processOne(int *fd1, char word[]){
+close(fd1[READ]);
 sleep(2);
-write(fd[WRITE],word,strlen(word) + 1);
+write(fd1[WRITE],word,strlen(word) + 1);
 sleep(1);
-close(fd[WRITE]);
+close(fd1[WRITE]);
 }
-void processTwo(int *fd){
+void processTwo(int *fd1,int *fd2){
 int recieved;
-int message[10];
-close(fd[WRITE]);
-recieved = read(fd[READ], message, 100);
+static char message[10];
+static char nmessage[10];
+close(fd1[WRITE]);
+recieved = read(fd1[READ], message, 100);
 if(recieved){
-printf("\nMessage recieved from pipe: %s\n\n", message);
-printf("revChar call: %s\n\n", revChars(message));
+printf("\nMessage recieved from pipe fd1: %s\n\n", message);
+strcpy(nmessage,revChars(message));
+printf("Reversed to: %s\n\n", nmessage);
 }
-close(fd[READ]);
+close(fd1[READ]);
+printf("\nClosed fd1 and opening fd2...\n");
+close(fd2[READ]);
+sleep(2);
+write(fd2[WRITE],nmessage,strlen(nmessage) + 1);
+sleep(1);
+close(fd2[WRITE]);
 }
 
