@@ -40,5 +40,14 @@ newWord[flip] = revword[ten];
 }
 return newWord;
 }
-
+/*upper case*/
+char* upperCase(char upper[])
+{
+int ten = 0;
+int len = strlen(upper);
+for(ten = 0; ten < len; ten++){
+upper[ten] = toupper(upper[ten]);
+}
+return upper;
+}
 

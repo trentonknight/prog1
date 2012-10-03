@@ -3,5 +3,6 @@
 void processInfo();
 void getInput(char word[]);
 char* revChars(char revword[]);
+char* upperCase(char upper[]);
 #endif
 
