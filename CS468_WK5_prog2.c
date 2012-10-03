@@ -32,20 +32,19 @@ pipe(fd3);
 getInput(word);
 f1_pid = fork();
 if(f1_pid == 0){
-printf("Creating piped message fd1...\n");
 processOne(fd1,word);
 }
 sleep(5);
 kill(f1_pid, SIGSTOP);
 f2_pid = fork();
 if(f2_pid == 0){
-printf("Reading pipe from f1_pid...\n");
 processTwo(fd1,fd2);
 }
-sleep(5);
+sleep(5)
 processThree(fd2,fd3);
 sleep(5);
 processFin(fd3,fd1);
+sleep(10);
 kill(f2_pid, SIGINT);
 kill(f1_pid, SIGINT);
 
@@ -70,7 +69,6 @@ strcpy(nmessage,revChars(message));
 printf("Reversed to: %s\n\n", nmessage);
 }
 close(fd1[READ]);
-printf("\nClosed fd1 and opening fd2...\n");
 close(fd2[READ]);
 sleep(2);
 write(fd2[WRITE],nmessage,strlen(nmessage) + 1);
@@ -89,7 +87,6 @@ strcpy(up,upperCase(message));
 printf("Set characters to uppercase: %s\n\n", up);
 }
 close(fd2[READ]);
-printf("\nClosed fd2 and opening fd3...\n");
 close(fd3[READ]);
 sleep(2);
 write(fd3[WRITE],up,strlen(up) + 1);
@@ -99,6 +96,7 @@ close(fd3[WRITE]);
 void processFin(int *fd3,int *fd1){
 int recieved;
 static char message[10];
+printf("\nProcess Finish...\n");
 close(fd1[WRITE]);
 recieved = read(fd1[READ], message, 100);
 if(recieved){
