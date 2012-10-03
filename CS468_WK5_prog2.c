@@ -26,6 +26,8 @@ int fd2[2];
 int fd3[2];
 int f1_pid;
 int f2_pid;
+int f3_pid;
+int f4_pid;
 pipe(fd1);
 pipe(fd2);
 pipe(fd3);
@@ -40,10 +42,18 @@ f2_pid = fork();
 if(f2_pid == 0){
 processTwo(fd1,fd2);
 }
-sleep(5)
-processThree(fd2,fd3);
 sleep(5);
+kill(f2_pid, SIGSTOP);
+f3_pid =  fork();
+if(f3_pid == 0){
+processThree(fd2,fd3);
+}
+sleep(5);
+kill(f3_pid, SIGSTOP);
+f4_pid = fork();
+if(f4_pid == 0){
 processFin(fd3,fd1);
+}
 sleep(10);
 kill(f2_pid, SIGINT);
 kill(f1_pid, SIGINT);
@@ -96,12 +106,18 @@ close(fd3[WRITE]);
 void processFin(int *fd3,int *fd1){
 int recieved;
 static char message[10];
-printf("\nProcess Finish...\n");
-close(fd1[WRITE]);
-recieved = read(fd1[READ], message, 100);
+static char up[10];
+close(fd3[WRITE]);
+recieved = read(fd3[READ], message, 100);
 if(recieved){
-printf("\nProcess Complete: %s\n\n", message);
-
+printf("\nProcess Three: %s\n\n", message);
+strcpy(up,upperCase(message));
+printf("Set characters to uppercase: %s\n\n", up);
 }
+close(fd3[READ]);
 close(fd1[READ]);
+sleep(2);
+write(fd1[WRITE],up,strlen(up) + 1);
+sleep(1);
+close(fd1[WRITE]);
 }
