@@ -1,0 +1,71 @@
+\hypertarget{psthreads_8c_source}{\section{psthreads.\-c}
+}
+
+\begin{DoxyCode}
+00001 \textcolor{preprocessor}{#include <signal.h>}
+00002 \textcolor{preprocessor}{#include "\hyperlink{processinf_8h}{processinf.h}"}
+00003 
+\hypertarget{psthreads_8c_source_l00004}{}\hyperlink{psthreads_8c_ada74e7db007a68e763f20c17f2985356}{00004} \textcolor{preprocessor}{#define READ 0}
+\hypertarget{psthreads_8c_source_l00005}{}\hyperlink{psthreads_8c_aa10f470e996d0f51210d24f442d25e1e}{00005} \textcolor{preprocessor}{}\textcolor{preprocessor}{#define WRITE 1}
+00006 \textcolor{preprocessor}{}
+\hypertarget{psthreads_8c_source_l00009}{}\hyperlink{psthreads_8c_ad770c3fce36513614f685761ab978c84}{00009} \textcolor{keywordtype}{void} \hyperlink{psthreads_8c_ad770c3fce36513614f685761ab978c84}{processOne}(\textcolor{keywordtype}{int} *fd1, \textcolor{keywordtype}{char} word[])\{
+00010 close(fd1[\hyperlink{psthreads_8c_ada74e7db007a68e763f20c17f2985356}{READ}]);
+00011 sleep(2);
+00012 write(fd1[\hyperlink{psthreads_8c_aa10f470e996d0f51210d24f442d25e1e}{WRITE}],word,strlen(word) + 1);
+00013 sleep(1);
+00014 close(fd1[WRITE]);
+00015 \}
+\hypertarget{psthreads_8c_source_l00017}{}\hyperlink{psthreads_8c_a41286be8a60549556fd52a785e55ceb3}{00017} \textcolor{keywordtype}{void} \hyperlink{psthreads_8c_a41286be8a60549556fd52a785e55ceb3}{processTwo}(\textcolor{keywordtype}{int} *fd1,\textcolor{keywordtype}{int} *fd2)\{
+00018 \textcolor{keywordtype}{int} recieved;
+00019 \textcolor{keyword}{static} \textcolor{keywordtype}{char} message[10];
+00020 \textcolor{keyword}{static} \textcolor{keywordtype}{char} nmessage[10];
+00021 close(fd1[\hyperlink{psthreads_8c_aa10f470e996d0f51210d24f442d25e1e}{WRITE}]);
+00022 recieved = read(fd1[\hyperlink{psthreads_8c_ada74e7db007a68e763f20c17f2985356}{READ}], message, 100);
+00023 \textcolor{keywordflow}{if}(recieved)\{
+00024 \textcolor{comment}{//printf("\(\backslash\)nProcess Two: %s\(\backslash\)n\(\backslash\)n", message);}
+00025 strcpy(nmessage,\hyperlink{processinf_8c_a864995963222a536c6889b97738c70cc}{revChars}(message));
+00026 \textcolor{comment}{//printf("Reversed to: %s\(\backslash\)n\(\backslash\)n", nmessage);}
+00027 \}
+00028 close(fd1[READ]);
+00029 close(fd2[READ]);
+00030 sleep(2);
+00031 write(fd2[WRITE],nmessage,strlen(nmessage) + 1);
+00032 sleep(1);
+00033 close(fd2[WRITE]);
+00034 \}
+\hypertarget{psthreads_8c_source_l00036}{}\hyperlink{psthreads_8c_aa9e93a11d641259d16a36df89c644d00}{00036} \textcolor{keywordtype}{void} \hyperlink{psthreads_8c_aa9e93a11d641259d16a36df89c644d00}{processThree}(\textcolor{keywordtype}{int} *fd2,\textcolor{keywordtype}{int} *fd3)\{
+00037 \textcolor{keywordtype}{int} recieved;
+00038 \textcolor{keyword}{static} \textcolor{keywordtype}{char} message[10];
+00039 \textcolor{keyword}{static} \textcolor{keywordtype}{char} up[10];
+00040 close(fd2[\hyperlink{psthreads_8c_aa10f470e996d0f51210d24f442d25e1e}{WRITE}]);
+00041 recieved = read(fd2[\hyperlink{psthreads_8c_ada74e7db007a68e763f20c17f2985356}{READ}], message, 100);
+00042 \textcolor{keywordflow}{if}(recieved)\{
+00043 \textcolor{comment}{//printf("\(\backslash\)nProcess Three: %s\(\backslash\)n\(\backslash\)n", message);}
+00044 strcpy(up,\hyperlink{processinf_8c_aac315e3e21f46229bf88f2aad5608561}{upperCase}(message));
+00045 \textcolor{comment}{//printf("Set characters to uppercase: %s\(\backslash\)n\(\backslash\)n", up);}
+00046 \}
+00047 close(fd2[READ]);
+00048 close(fd3[READ]);
+00049 sleep(2);
+00050 write(fd3[WRITE],up,strlen(up) + 1);
+00051 sleep(1);
+00052 close(fd3[WRITE]);
+00053 \}
+\hypertarget{psthreads_8c_source_l00055}{}\hyperlink{psthreads_8c_ad4fbf5e28b0ec1a60e850f9f1887c615}{00055} \textcolor{keywordtype}{void} \hyperlink{psthreads_8c_ad4fbf5e28b0ec1a60e850f9f1887c615}{processFin}(\textcolor{keywordtype}{int} *fd3,\textcolor{keywordtype}{int} *fd1)\{
+00056 \textcolor{keywordtype}{int} recieved;
+00057 \textcolor{keyword}{static} \textcolor{keywordtype}{char} message[10];
+00058 \textcolor{keyword}{static} \textcolor{keywordtype}{char} up[10];
+00059 close(fd3[\hyperlink{psthreads_8c_aa10f470e996d0f51210d24f442d25e1e}{WRITE}]);
+00060 recieved = read(fd3[\hyperlink{psthreads_8c_ada74e7db007a68e763f20c17f2985356}{READ}], message, 100);
+00061 \textcolor{keywordflow}{if}(recieved)\{
+00062 printf(\textcolor{stringliteral}{"\(\backslash\)nEnd of Pipes: %s\(\backslash\)n\(\backslash\)n"}, message);
+00063 \}
+00064 close(fd3[READ]);
+00065 close(fd1[READ]);
+00066 sleep(2);
+00067 write(fd1[WRITE],up,strlen(up) + 1);
+00068 sleep(1);
+00069 close(fd1[WRITE]);
+00070 \}
+00071 
+\end{DoxyCode}

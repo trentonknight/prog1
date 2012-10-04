@@ -1,12 +1,7 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <signal.h>
 #include <string.h>
-#include <ctype.h>
-//#include <fcntl.h>
-//#include <pthread.h>
 
 /*check threads*/
  void processInfo()

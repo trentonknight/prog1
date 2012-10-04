@@ -1,0 +1,124 @@
+\hypertarget{processinf_8c}{\section{processinf.\-c File Reference}
+\label{processinf_8c}\index{processinf.\-c@{processinf.\-c}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$signal.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{processinf_8c_a274a7c96e6aa087e9225b6fba27078cc}{process\-Info} ()
+\item 
+void \hyperlink{processinf_8c_ac908e9757328e0bd76c4f1735c0e23cf}{get\-Input} (char word\mbox{[}$\,$\mbox{]})
+\item 
+char $\ast$ \hyperlink{processinf_8c_a864995963222a536c6889b97738c70cc}{rev\-Chars} (char revword\mbox{[}$\,$\mbox{]})
+\item 
+char $\ast$ \hyperlink{processinf_8c_aac315e3e21f46229bf88f2aad5608561}{upper\-Case} (char upper\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{processinf_8c_ac908e9757328e0bd76c4f1735c0e23cf}{\index{processinf.\-c@{processinf.\-c}!get\-Input@{get\-Input}}
+\index{get\-Input@{get\-Input}!processinf.c@{processinf.\-c}}
+\subsubsection[{get\-Input}]{\setlength{\rightskip}{0pt plus 5cm}void get\-Input (
+\begin{DoxyParamCaption}
+\item[{char}]{word\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{processinf_8c_ac908e9757328e0bd76c4f1735c0e23cf}
+
+
+Definition at line \hyperlink{processinf_8c_source_l00013}{13} of file \hyperlink{processinf_8c_source}{processinf.\-c}.
+
+
+
+Referenced by \hyperlink{_c_s468___w_k5__prog2_8c_source_l00007}{main()}.
+
+
+\begin{DoxyCode}
+\{
+fputs(\textcolor{stringliteral}{"Enter up to ten characters: "}, stdout);
+fflush(stdout);
+\textcolor{keywordflow}{if}(fgets(word, \textcolor{keyword}{sizeof} word, stdin) != NULL)
+\{
+\textcolor{keywordtype}{char} *newline = strchr(word, \textcolor{charliteral}{'\(\backslash\)n'});
+\textcolor{keywordflow}{if}(newline != NULL)
+\{
+*newline = \textcolor{charliteral}{'\(\backslash\)0'};
+\}
+\}
+\}
+\end{DoxyCode}
+\hypertarget{processinf_8c_a274a7c96e6aa087e9225b6fba27078cc}{\index{processinf.\-c@{processinf.\-c}!process\-Info@{process\-Info}}
+\index{process\-Info@{process\-Info}!processinf.c@{processinf.\-c}}
+\subsubsection[{process\-Info}]{\setlength{\rightskip}{0pt plus 5cm}void process\-Info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{processinf_8c_a274a7c96e6aa087e9225b6fba27078cc}
+
+
+Definition at line \hyperlink{processinf_8c_source_l00007}{7} of file \hyperlink{processinf_8c_source}{processinf.\-c}.
+
+
+\begin{DoxyCode}
+ \{
+ printf(\textcolor{stringliteral}{"Parent is: %d...\(\backslash\)n"},getppid());
+ printf(\textcolor{stringliteral}{"Fork running is: %d...\(\backslash\)n"},getpid());
+ \}
+\end{DoxyCode}
+\hypertarget{processinf_8c_a864995963222a536c6889b97738c70cc}{\index{processinf.\-c@{processinf.\-c}!rev\-Chars@{rev\-Chars}}
+\index{rev\-Chars@{rev\-Chars}!processinf.c@{processinf.\-c}}
+\subsubsection[{rev\-Chars}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ rev\-Chars (
+\begin{DoxyParamCaption}
+\item[{char}]{revword\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{processinf_8c_a864995963222a536c6889b97738c70cc}
+
+
+Definition at line \hyperlink{processinf_8c_source_l00027}{27} of file \hyperlink{processinf_8c_source}{processinf.\-c}.
+
+
+
+Referenced by \hyperlink{psthreads_8c_source_l00017}{process\-Two()}.
+
+
+\begin{DoxyCode}
+                              \{
+\textcolor{keywordtype}{int} ten = 0;
+\textcolor{keywordtype}{int} flip = strlen(revword);
+\textcolor{keywordtype}{int} loopr = flip + 1;
+\textcolor{keyword}{static} \textcolor{keywordtype}{char} newWord[10] = \{0\};
+\textcolor{keywordflow}{for}(ten = 0; ten < loopr; ten++)\{
+flip--;
+newWord[flip] = revword[ten];
+\}
+\textcolor{keywordflow}{return} newWord;
+\}
+\end{DoxyCode}
+\hypertarget{processinf_8c_aac315e3e21f46229bf88f2aad5608561}{\index{processinf.\-c@{processinf.\-c}!upper\-Case@{upper\-Case}}
+\index{upper\-Case@{upper\-Case}!processinf.c@{processinf.\-c}}
+\subsubsection[{upper\-Case}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ upper\-Case (
+\begin{DoxyParamCaption}
+\item[{char}]{upper\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{processinf_8c_aac315e3e21f46229bf88f2aad5608561}
+
+
+Definition at line \hyperlink{processinf_8c_source_l00039}{39} of file \hyperlink{processinf_8c_source}{processinf.\-c}.
+
+
+
+Referenced by \hyperlink{psthreads_8c_source_l00036}{process\-Three()}.
+
+
+\begin{DoxyCode}
+\{
+\textcolor{keywordtype}{int} ten = 0;
+\textcolor{keywordtype}{int} len = strlen(upper);
+\textcolor{keywordflow}{for}(ten = 0; ten < len; ten++)\{
+upper[ten] = toupper(upper[ten]);
+\}
+\textcolor{keywordflow}{return} upper;
+\}
+\end{DoxyCode}

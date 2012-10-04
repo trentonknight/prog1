@@ -1,0 +1,84 @@
+\hypertarget{_c_s468___w_k5__prog1_8c}{\section{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c File Reference}
+\label{_c_s468___w_k5__prog1_8c}\index{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c@{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$sys/types.\-h$>$}\\*
+{\ttfamily \#include $<$signal.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_c_s468___w_k5__prog1_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_c_s468___w_k5__prog1_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c@{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c}!main@{main}}
+\index{main@{main}!CS468_WK5_prog1.c@{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_c_s468___w_k5__prog1_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Definition at line \hyperlink{_c_s468___w_k5__prog1_8c_source_l00007}{7} of file \hyperlink{_c_s468___w_k5__prog1_8c_source}{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c}.
+
+
+\begin{DoxyCode}
+\{
+\textcolor{keywordtype}{int} pid1 = 0,
+pid2 = 0,
+i = 0,
+ret = 0,
+status = 0;
+
+
+pid1 = fork();
+
+\textcolor{keywordflow}{if}(pid1 == 0)\{
+
+printf(\textcolor{stringliteral}{"First child process %d .\(\backslash\)n"}, getpid());
+printf(\textcolor{stringliteral}{"\(\backslash\)n"});
+\textcolor{keywordflow}{for}(i = 1; i < 6; i++)\{
+   printf(\textcolor{stringliteral}{"Counting...%d\(\backslash\)n"},i);
+   sleep(1);
+ \}
+exit(0);
+kill (pid1, SIGSTOP);
+printf(\textcolor{stringliteral}{"Parent process  %d  suspended first child process  %d ...\(\backslash\)n"}, getppid()
+      , getpid());
+\}
+\textcolor{comment}{/*sleep and let first child finish...*/}
+sleep(5);
+pid2 = fork();
+\textcolor{keywordflow}{if}(pid2 == 0)\{
+printf(\textcolor{stringliteral}{"Second child process  %d  starting...\(\backslash\)n"}, getpid());
+printf(\textcolor{stringliteral}{"Second child's parent process is  %d .\(\backslash\)n"}, getppid());
+printf(\textcolor{stringliteral}{"Process  %d  will display process status:\(\backslash\)n"}, getpid());
+\textcolor{keywordflow}{if} ((execl (\textcolor{stringliteral}{"/bin/ps"}, \textcolor{stringliteral}{"ps"}, \textcolor{stringliteral}{"-M"}, NULL)) == -1)
+\{
+perror(\textcolor{stringliteral}{"execl failed!"});
+exit(1);
+\}
+exit(0);
+\}
+\textcolor{comment}{/*sleep and let second child finish...*/}
+sleep(5);
+kill (pid2, SIGINT);
+\textcolor{keywordflow}{if}(pid2 != 0)\{
+ret = wait(&status);
+printf(\textcolor{stringliteral}{"Second child process %d terminated.\(\backslash\)n"},ret);
+\}
+kill (pid1, SIGCONT);
+\textcolor{comment}{//sleep(5);}
+kill (pid1, SIGINT);
+\textcolor{keywordflow}{if}(pid1 != 0)\{
+ret = wait(&status);
+printf(\textcolor{stringliteral}{"First child process %d terminated.\(\backslash\)n"}, ret);
+\}
+exit(5);
+\textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCode}

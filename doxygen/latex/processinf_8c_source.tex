@@ -1,0 +1,53 @@
+\hypertarget{processinf_8c_source}{\section{processinf.\-c}
+}
+
+\begin{DoxyCode}
+00001 \textcolor{preprocessor}{#include <stdio.h>}
+00002 \textcolor{preprocessor}{#include <stdlib.h>}
+00003 \textcolor{preprocessor}{#include <signal.h>}
+00004 \textcolor{preprocessor}{#include <string.h>}
+00005 
+00006 \textcolor{comment}{/*check threads*/}
+\hypertarget{processinf_8c_source_l00007}{}\hyperlink{processinf_8c_a274a7c96e6aa087e9225b6fba27078cc}{00007}  \textcolor{keywordtype}{void} \hyperlink{processinf_8c_a274a7c96e6aa087e9225b6fba27078cc}{processInfo}()
+00008  \{
+00009  printf(\textcolor{stringliteral}{"Parent is: %d...\(\backslash\)n"},getppid());
+00010  printf(\textcolor{stringliteral}{"Fork running is: %d...\(\backslash\)n"},getpid());
+00011  \}
+00012 \textcolor{comment}{/*get user input*/}
+\hypertarget{processinf_8c_source_l00013}{}\hyperlink{processinf_8c_ac908e9757328e0bd76c4f1735c0e23cf}{00013}  \textcolor{keywordtype}{void} \hyperlink{processinf_8c_ac908e9757328e0bd76c4f1735c0e23cf}{getInput}(\textcolor{keywordtype}{char} word[])
+00014 \{
+00015 fputs(\textcolor{stringliteral}{"Enter up to ten characters: "}, stdout);
+00016 fflush(stdout);
+00017 \textcolor{keywordflow}{if}(fgets(word, \textcolor{keyword}{sizeof} word, stdin) != NULL)
+00018 \{
+00019 \textcolor{keywordtype}{char} *newline = strchr(word, \textcolor{charliteral}{'\(\backslash\)n'});
+00020 \textcolor{keywordflow}{if}(newline != NULL)
+00021 \{
+00022 *newline = \textcolor{charliteral}{'\(\backslash\)0'};
+00023 \}
+00024 \}
+00025 \}
+00026 \textcolor{comment}{/*reverse char*/}
+\hypertarget{processinf_8c_source_l00027}{}\hyperlink{processinf_8c_a864995963222a536c6889b97738c70cc}{00027} \textcolor{keywordtype}{char}* \hyperlink{processinf_8c_a864995963222a536c6889b97738c70cc}{revChars}(\textcolor{keywordtype}{char} revword[])\{
+00028 \textcolor{keywordtype}{int} ten = 0;
+00029 \textcolor{keywordtype}{int} flip = strlen(revword);
+00030 \textcolor{keywordtype}{int} loopr = flip + 1;
+00031 \textcolor{keyword}{static} \textcolor{keywordtype}{char} newWord[10] = \{0\};
+00032 \textcolor{keywordflow}{for}(ten = 0; ten < loopr; ten++)\{
+00033 flip--;
+00034 newWord[flip] = revword[ten];
+00035 \}
+00036 \textcolor{keywordflow}{return} newWord;
+00037 \}
+00038 \textcolor{comment}{/*upper case*/}
+\hypertarget{processinf_8c_source_l00039}{}\hyperlink{processinf_8c_aac315e3e21f46229bf88f2aad5608561}{00039} \textcolor{keywordtype}{char}* \hyperlink{processinf_8c_aac315e3e21f46229bf88f2aad5608561}{upperCase}(\textcolor{keywordtype}{char} upper[])
+00040 \{
+00041 \textcolor{keywordtype}{int} ten = 0;
+00042 \textcolor{keywordtype}{int} len = strlen(upper);
+00043 \textcolor{keywordflow}{for}(ten = 0; ten < len; ten++)\{
+00044 upper[ten] = toupper(upper[ten]);
+00045 \}
+00046 \textcolor{keywordflow}{return} upper;
+00047 \}
+00048 
+\end{DoxyCode}

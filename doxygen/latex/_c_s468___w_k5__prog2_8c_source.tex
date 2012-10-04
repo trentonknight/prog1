@@ -1,0 +1,52 @@
+\hypertarget{_c_s468___w_k5__prog2_8c_source}{\section{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c}
+}
+
+\begin{DoxyCode}
+00001 \textcolor{preprocessor}{#include <signal.h>}
+00002 \textcolor{preprocessor}{#include "\hyperlink{processinf_8h}{processinf.h}"}
+00003 \textcolor{preprocessor}{#include "\hyperlink{psthreads_8h}{psthreads.h}"}
+\hypertarget{_c_s468___w_k5__prog2_8c_source_l00007}{}\hyperlink{_c_s468___w_k5__prog2_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{00007} \textcolor{keywordtype}{int} \hyperlink{_c_s468___w_k5__prog1_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}()
+00008 \{
+00009 \textcolor{keywordtype}{char} word[10];
+00010 \textcolor{keywordtype}{int} fd1[2];
+00011 \textcolor{keywordtype}{int} fd2[2];
+00012 \textcolor{keywordtype}{int} fd3[2];
+00013 \textcolor{keywordtype}{int} f1\_pid;
+00014 \textcolor{keywordtype}{int} f2\_pid;
+00015 \textcolor{keywordtype}{int} f3\_pid;
+00016 \textcolor{keywordtype}{int} f4\_pid;
+00017 pipe(fd1);
+00018 pipe(fd2);
+00019 pipe(fd3);
+00020 \hyperlink{processinf_8c_ac908e9757328e0bd76c4f1735c0e23cf}{getInput}(word);
+00021 f1\_pid = fork();
+00022 \textcolor{keywordflow}{if}(f1\_pid == 0)\{
+00023 \hyperlink{psthreads_8c_ad770c3fce36513614f685761ab978c84}{processOne}(fd1,word);
+00024 \}
+00025 sleep(5);
+00026 kill(f1\_pid, SIGSTOP);
+00027 f2\_pid = fork();
+00028 \textcolor{keywordflow}{if}(f2\_pid == 0)\{
+00029 \hyperlink{psthreads_8c_a41286be8a60549556fd52a785e55ceb3}{processTwo}(fd1,fd2);
+00030 \}
+00031 sleep(5);
+00032 kill(f2\_pid, SIGSTOP);
+00033 f3\_pid =  fork();
+00034 \textcolor{keywordflow}{if}(f3\_pid == 0)\{
+00035 \hyperlink{psthreads_8c_aa9e93a11d641259d16a36df89c644d00}{processThree}(fd2,fd3);
+00036 \}
+00037 sleep(5);
+00038 kill(f3\_pid, SIGSTOP);
+00039 f4\_pid = fork();
+00040 \textcolor{keywordflow}{if}(f4\_pid == 0)\{
+00041 \hyperlink{psthreads_8c_ad4fbf5e28b0ec1a60e850f9f1887c615}{processFin}(fd3,fd1);
+00042 \}
+00043 sleep(10);
+00044 kill(f4\_pid, SIGINT);
+00045 kill(f3\_pid, SIGINT);
+00046 kill(f2\_pid, SIGINT);
+00047 kill(f1\_pid, SIGINT);
+00048 
+00049 \textcolor{keywordflow}{return} 0;
+00050 \}
+\end{DoxyCode}

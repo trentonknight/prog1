@@ -1,0 +1,71 @@
+\hypertarget{_c_s468___w_k5__prog2_8c}{\section{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c File Reference}
+\label{_c_s468___w_k5__prog2_8c}\index{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c@{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c}}
+}
+{\ttfamily \#include $<$signal.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}processinf.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}psthreads.\-h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_c_s468___w_k5__prog2_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_c_s468___w_k5__prog2_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c@{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c}!main@{main}}
+\index{main@{main}!CS468_WK5_prog2.c@{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_c_s468___w_k5__prog2_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+Compile with\-: gcc -\/ggdb \hyperlink{_c_s468___w_k5__prog2_8c}{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c} \hyperlink{processinf_8c}{processinf.\-c} \hyperlink{psthreads_8c}{psthreads.\-c}/// 
+
+Definition at line \hyperlink{_c_s468___w_k5__prog2_8c_source_l00007}{7} of file \hyperlink{_c_s468___w_k5__prog2_8c_source}{C\-S468\-\_\-\-W\-K5\-\_\-prog2.\-c}.
+
+
+\begin{DoxyCode}
+\{
+\textcolor{keywordtype}{char} word[10];
+\textcolor{keywordtype}{int} fd1[2];
+\textcolor{keywordtype}{int} fd2[2];
+\textcolor{keywordtype}{int} fd3[2];
+\textcolor{keywordtype}{int} f1\_pid;
+\textcolor{keywordtype}{int} f2\_pid;
+\textcolor{keywordtype}{int} f3\_pid;
+\textcolor{keywordtype}{int} f4\_pid;
+pipe(fd1);
+pipe(fd2);
+pipe(fd3);
+\hyperlink{processinf_8c_ac908e9757328e0bd76c4f1735c0e23cf}{getInput}(word);
+f1\_pid = fork();
+\textcolor{keywordflow}{if}(f1\_pid == 0)\{
+\hyperlink{psthreads_8c_ad770c3fce36513614f685761ab978c84}{processOne}(fd1,word);
+\}
+sleep(5);
+kill(f1\_pid, SIGSTOP);
+f2\_pid = fork();
+\textcolor{keywordflow}{if}(f2\_pid == 0)\{
+\hyperlink{psthreads_8c_a41286be8a60549556fd52a785e55ceb3}{processTwo}(fd1,fd2);
+\}
+sleep(5);
+kill(f2\_pid, SIGSTOP);
+f3\_pid =  fork();
+\textcolor{keywordflow}{if}(f3\_pid == 0)\{
+\hyperlink{psthreads_8c_aa9e93a11d641259d16a36df89c644d00}{processThree}(fd2,fd3);
+\}
+sleep(5);
+kill(f3\_pid, SIGSTOP);
+f4\_pid = fork();
+\textcolor{keywordflow}{if}(f4\_pid == 0)\{
+\hyperlink{psthreads_8c_ad4fbf5e28b0ec1a60e850f9f1887c615}{processFin}(fd3,fd1);
+\}
+sleep(10);
+kill(f4\_pid, SIGINT);
+kill(f3\_pid, SIGINT);
+kill(f2\_pid, SIGINT);
+kill(f1\_pid, SIGINT);
+
+\textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCode}

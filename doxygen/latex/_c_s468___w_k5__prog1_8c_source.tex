@@ -1,0 +1,67 @@
+\hypertarget{_c_s468___w_k5__prog1_8c_source}{\section{C\-S468\-\_\-\-W\-K5\-\_\-prog1.\-c}
+}
+
+\begin{DoxyCode}
+00001 \textcolor{preprocessor}{#include <stdio.h>}
+00002 \textcolor{preprocessor}{#include <unistd.h>}
+00003 \textcolor{preprocessor}{#include <stdlib.h>}
+00004 \textcolor{preprocessor}{#include <sys/types.h>}
+00005 \textcolor{preprocessor}{#include <signal.h>}
+00006 
+\hypertarget{_c_s468___w_k5__prog1_8c_source_l00007}{}\hyperlink{_c_s468___w_k5__prog1_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{00007} \textcolor{keywordtype}{int} \hyperlink{_c_s468___w_k5__prog1_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}()
+00008 
+00009 \{
+00010 \textcolor{keywordtype}{int} pid1 = 0,
+00011 pid2 = 0,
+00012 i = 0,
+00013 ret = 0,
+00014 status = 0;
+00015 
+00016 
+00017 pid1 = fork();
+00018 
+00019 \textcolor{keywordflow}{if}(pid1 == 0)\{
+00020 
+00021 printf(\textcolor{stringliteral}{"First child process %d .\(\backslash\)n"}, getpid());
+00022 printf(\textcolor{stringliteral}{"\(\backslash\)n"});
+00023 \textcolor{keywordflow}{for}(i = 1; i < 6; i++)\{
+00024    printf(\textcolor{stringliteral}{"Counting...%d\(\backslash\)n"},i);
+00025    sleep(1);
+00026  \}
+00027 exit(0);
+00028 kill (pid1, SIGSTOP);
+00029 printf(\textcolor{stringliteral}{"Parent process  %d  suspended first child process  %d ...\(\backslash\)n"}, getppid()
+      , getpid());
+00030 \}
+00031 \textcolor{comment}{/*sleep and let first child finish...*/}
+00032 sleep(5);
+00033 pid2 = fork();
+00034 \textcolor{keywordflow}{if}(pid2 == 0)\{
+00035 printf(\textcolor{stringliteral}{"Second child process  %d  starting...\(\backslash\)n"}, getpid());
+00036 printf(\textcolor{stringliteral}{"Second child's parent process is  %d .\(\backslash\)n"}, getppid());
+00037 printf(\textcolor{stringliteral}{"Process  %d  will display process status:\(\backslash\)n"}, getpid());
+00038 \textcolor{keywordflow}{if} ((execl (\textcolor{stringliteral}{"/bin/ps"}, \textcolor{stringliteral}{"ps"}, \textcolor{stringliteral}{"-M"}, NULL)) == -1)
+00039 \{
+00040 perror(\textcolor{stringliteral}{"execl failed!"});
+00041 exit(1);
+00042 \}
+00043 exit(0);
+00044 \}
+00045 \textcolor{comment}{/*sleep and let second child finish...*/}
+00046 sleep(5);
+00047 kill (pid2, SIGINT);
+00048 \textcolor{keywordflow}{if}(pid2 != 0)\{
+00049 ret = wait(&status);
+00050 printf(\textcolor{stringliteral}{"Second child process %d terminated.\(\backslash\)n"},ret);
+00051 \}
+00052 kill (pid1, SIGCONT);
+00053 \textcolor{comment}{//sleep(5);}
+00054 kill (pid1, SIGINT);
+00055 \textcolor{keywordflow}{if}(pid1 != 0)\{
+00056 ret = wait(&status);
+00057 printf(\textcolor{stringliteral}{"First child process %d terminated.\(\backslash\)n"}, ret);
+00058 \}
+00059 exit(5);
+00060 \textcolor{keywordflow}{return} 0;
+00061 \}
+\end{DoxyCode}
